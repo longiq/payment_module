@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Kết quả thanh toán</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="card result-card">
+      {% if status == "succeeded" %}
+        <div class="result-icon success-icon">✓</div>
+        <h1>Thanh toán thành công!</h1>
+        <p class="result-amount">{{ amount_display }}</p>
+        <p class="result-sub">Cảm ơn bạn. Đơn hàng đang được xử lý.</p>
+      {% elif status == "processing" %}
+        <div class="result-icon pending-icon">⏳</div>
+        <h1>Đang xử lý...</h1>
+        <p class="result-sub">Chúng tôi sẽ thông báo khi hoàn tất.</p>
+      {% else %}
+        <div class="result-icon error-icon">✕</div>
+        <h1>Thanh toán thất bại</h1>
+        <p class="result-sub">Vui lòng thử lại. ({{ status }})</p>
+      {% endif %}
+      {% if payment_intent_id %}
+        <p class="payment-id">Mã GD: <code>{{ payment_intent_id }}</code></p>
+      {% endif %}
+      <a href="/" class="btn-back">← Quay lại</a>
+    </div>
+  </div>
+</body>
+</html>

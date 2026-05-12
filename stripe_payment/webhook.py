@@ -23,7 +23,7 @@ def handle_payment_intent_events(event: stripe.Event) -> dict:
     result = {
         "event_type": event.type, "payment_intent_id": intent.id,
         "status": intent.status, "amount": intent.amount, "currency": intent.currency,
-        "customer_id": intent.customer, "metadata": dict(intent.metadata),
+        "customer_id": intent.customer, "metadata": intent.metadata.to_dict() if intent.metadata else {},
     }
     if event.type == "payment_intent.payment_failed":
         last_error = intent.last_payment_error

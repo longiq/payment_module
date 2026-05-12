@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="order-summary">
+        <h2>Chi tiết đơn hàng</h2>
+        <div class="order-item">
+          <span>Gói Premium (1 tháng)</span>
+          <span class="price">$50.00</span>
+        </div>
+        <div class="order-total">
+          <span>Tổng cộng</span>
+          <span class="price">$50.00 USD</span>
+        </div>
+      </div>
+
+      <form id="payment-form">
+        <h2>Thông tin thanh toán</h2>
+        <div id="payment-element"></div>
+        <div id="payment-message" class="payment-message hidden"></div>
+        <button id="submit-btn" type="submit">
+          <span id="btn-text">Thanh toán $50.00</span>
+          <span id="btn-spinner" class="spinner hidden"></span>
+        </button>
+      </form>
+
+      <p class="test-hint">
+        🧪 Thẻ test: <code>4242 4242 4242 4242</code> &nbsp;|&nbsp;
+        Ngày hết hạn bất kỳ trong tương lai &nbsp;|&nbsp; CVC bất kỳ
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const stripe = Stripe("{{ publishable_key }}");
+    let elements;
+
+    async function initialize() {
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: {{ amount }}, currency: "{{ currency|lower }}" }),
+      });
+      const { clientSecret, error } = await res.json();
+      if (error) { showMessage("Lỗi: " + error); return; }
+
+      elements = stripe.elements({
+        clientSecret,
+        appearance: {
+          theme: "stripe",
+          variables: { colorPrimary: "#4f46e5", borderRadius: "8px" },
+        },
+      });
+      elements.create("payment", {
+        layout: "tabs",
+        defaultValues: { billingDetails: { address: { country: "VN" } } },
+      }).mount("#payment-element");
+    }
+
+    document.getElementById("payment-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: { return_url: window.location.origin + "/success" },
+      });
+      if (error) showMessage(error.message);
+      setLoading(false);
+    });
+
+    function showMessage(msg) {
+      const el = document.getElementById("payment-message");
+      el.textContent = msg;
+      el.classList.remove("hidden");
+      setTimeout(() => el.classList.add("hidden"), 6000);
+    }
+
+    function setLoading(isLoading) {
+      document.getElementById("submit-btn").disabled = isLoading;
+      document.getElementById("btn-text").classList.toggle("hidden", isLoading);
+      document.getElementById("btn-spinner").classList.toggle("hidden", !isLoading);
+    }
+
+    initialize();
+  </script>
+</body>
+</html>

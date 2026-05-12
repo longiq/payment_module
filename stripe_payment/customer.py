@@ -21,7 +21,7 @@ def create_customer(data: CustomerData) -> CustomerResult:
         customer = client.Customer.create(**payload)
         return CustomerResult(
             customer_id=customer.id, email=customer.email,
-            name=customer.name, metadata=dict(customer.metadata),
+            name=customer.name, metadata=customer.metadata.to_dict() if customer.metadata else {},
         )
     except stripe.error.InvalidRequestError as e:
         raise StripePaymentError(str(e), code="invalid_request", stripe_error=e) from e
@@ -43,7 +43,7 @@ def attach_payment_method(customer_id: str, card: CardDetails) -> CustomerResult
         customer = client.Customer.retrieve(customer_id)
         return CustomerResult(
             customer_id=customer.id, email=customer.email,
-            name=customer.name, payment_method_id=pm.id, metadata=dict(customer.metadata),
+            name=customer.name, payment_method_id=pm.id, metadata=customer.metadata.to_dict() if customer.metadata else {},
         )
     except stripe.error.CardError as e:
         _raise_card_error(e)
@@ -68,7 +68,7 @@ def retrieve_customer(customer_id: str) -> CustomerResult:
             pm_id = customer.invoice_settings.get("default_payment_method")
         return CustomerResult(
             customer_id=customer.id, email=customer.email,
-            name=customer.name, payment_method_id=pm_id, metadata=dict(customer.metadata),
+            name=customer.name, payment_method_id=pm_id, metadata=customer.metadata.to_dict() if customer.metadata else {},
         )
     except stripe.error.InvalidRequestError as e:
         raise CustomerNotFoundError(f"Customer '{customer_id}' not found.",

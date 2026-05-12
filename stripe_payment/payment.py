@@ -106,7 +106,7 @@ def _build_result(intent) -> PaymentResult:
         payment_intent_id=intent.id, status=PaymentStatus(intent.status),
         amount=intent.amount, currency=intent.currency, customer_id=intent.customer,
         payment_method_id=intent.payment_method, client_secret=intent.client_secret,
-        metadata=dict(intent.metadata),
+        metadata=intent.metadata.to_dict() if intent.metadata else {},
     )
 
 

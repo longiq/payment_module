@@ -1,0 +1,31 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:#f3f4f6;color:#1f2937;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.container{width:100%;max-width:480px}
+.card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08);padding:32px}
+.order-summary{margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+.order-summary h2,form h2{font-size:.9rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
+.order-item{display:flex;justify-content:space-between;margin-bottom:8px;font-size:.95rem}
+.order-total{display:flex;justify-content:space-between;margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;font-weight:600}
+.price{font-weight:600;color:#111827}
+#payment-element{margin-bottom:20px}
+#submit-btn{width:100%;padding:14px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+#submit-btn:hover:not(:disabled){background:#4338ca}
+#submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.payment-message{color:#dc2626;font-size:.875rem;margin-bottom:12px;padding:10px 14px;background:#fef2f2;border-radius:6px;border:1px solid #fecaca}
+.test-hint{margin-top:20px;font-size:.8rem;color:#9ca3af;text-align:center;line-height:1.6}
+.test-hint code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-family:monospace;color:#374151}
+.hidden{display:none!important}
+.result-card{text-align:center;padding:48px 32px}
+.result-icon{width:72px;height:72px;border-radius:50%;font-size:2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.success-icon{background:#d1fae5;color:#059669}
+.error-icon{background:#fee2e2;color:#dc2626}
+.pending-icon{background:#fef3c7;color:#d97706}
+.result-card h1{font-size:1.5rem;margin-bottom:8px}
+.result-amount{font-size:2rem;font-weight:700;color:#059669;margin:12px 0}
+.result-sub{color:#6b7280;margin-bottom:24px;line-height:1.6}
+.payment-id{font-size:.8rem;color:#9ca3af;margin-bottom:28px}
+.payment-id code{font-family:monospace}
+.btn-back{display:inline-block;padding:10px 20px;background:#f3f4f6;color:#374151;border-radius:8px;text-decoration:none;font-weight:500}
+.btn-back:hover{background:#e5e7eb}

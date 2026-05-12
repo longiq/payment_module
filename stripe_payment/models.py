@@ -10,6 +10,8 @@ class PaymentStatus(str, Enum):
     CANCELED = "canceled"
     REQUIRES_ACTION = "requires_action"
     REQUIRES_CONFIRMATION = "requires_confirmation"
+    REQUIRES_PAYMENT_METHOD = "requires_payment_method"
+    REQUIRES_CAPTURE = "requires_capture"
 
 
 class Currency(str, Enum):
