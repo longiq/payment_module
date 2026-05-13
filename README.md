@@ -1,2 +1,2 @@
-# learning
-start learning code from the beginning
+# payment_module
+stripe payment module
